@@ -1,0 +1,17 @@
+{
+  "parts":[
+    {
+      "name": "stats",
+      "hooks":{
+        "expressCreateServer": "ep_stats/express",
+        "eejsBlock_exportColumn": "ep_stats/index",
+        "eejsBlock_scripts": "ep_stats/index",
+        "eejsBlock_mySettings": "ep_stats/index",
+        "eejsBlock_styles":"ep_stats/index"
+      },
+      "client_hooks": {
+        "postAceInit": "ep_stats/static/js/stats"
+      }
+    }
+  ]
+}
