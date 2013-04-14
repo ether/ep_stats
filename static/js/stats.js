@@ -22,7 +22,6 @@ exports.stats = {
     $('#revCount > .stats').html( pad.getCollabRevisionNumber() );
     $('#savedRevCount > .stats').html( clientVars.savedRevisions.length ); // TODO cake doesnt update in real time
     $('#authorCount > .stats').html( Object.keys(clientVars.collab_client_vars.historicalAuthorData).length );
-
     $('#wordsContributed > .stats').html( tb(exports.stats.authors.numberOfWords()) );
     $('#linesContributed > .stats').html( tb(exports.stats.authors.numberOfLines()) );
     $('#linesAsOnlyContributor > .stats').html( tb(exports.stats.authors.numberOfLinesExclusive()) );
@@ -52,7 +51,6 @@ exports.stats.authors = {
         }
       });
     });
-    // to do make a clean html format
     return results;
   },
   numberOfLines: function(){
@@ -73,11 +71,39 @@ exports.stats.authors = {
         }
       });
     });
-    // to do make a clean html format
     return results;
 
   },
   numberOfLinesExclusive: function(){
+    var results = {};
+    var lineCount = 1;
+    // output format.  John -- 1, Dave -- 1
+    $('iframe[name="ace_outer"]').contents().find('iframe').contents().find("#innerdocbody").contents().each(function(){ // For Each LINE
+      var line = {};
+      $(this).contents().each(function(){ // For SPAN!
+        var classes = $(this).attr("class");
+        if(classes){
+          if( classes.indexOf("author") !== -1){ // if an author class exists on this span
+            if( !line[ lineCount ] ){
+              line[ lineCount ] = {};
+              line[ lineCount ].author = $(this).attr("class"); // first author!
+            }else{
+              delete line[ lineCount ];// already has an author so nuke!
+            }
+          }
+        }
+        // End Span
+      });
+      var lineHasOneAuthor = (line[lineCount])
+      if(lineHasOneAuthor){
+        // add author to results obj
+        var author = line[lineCount].author;
+        results[author] = (results[author] +1) || 1
+      }
+      lineCount++;
+      // End Line
+    });
+    return results;
   },
   numberOfChars: function(){
     var results = {};
@@ -97,7 +123,6 @@ exports.stats.authors = {
         }
       });
     });
-    // to do make a clean html format
     return results;
   },
   numberOfCharsExcWS: function(){
@@ -118,7 +143,6 @@ exports.stats.authors = {
         }
       });
     });
-    // to do make a clean html format
     return results;
   }
 }
@@ -146,18 +170,18 @@ exports.aceEditEvent = function(hook_name, event, cb){
 
 exports.className2Author = function(className)
 {
-  return className.substring(7).replace(/[a-y0-9]+|-|z.+?z/g, function(cc)
-  {
-    if (cc == '-') return '.';
-    else if (cc.charAt(0) == 'z')
-    {
-      return String.fromCharCode(Number(cc.slice(1, -1)));
-    }
-    else
-    {
-      return cc;
-    }
-  });
+  return className.substring(7).replace(/[a-y0-9]+|-|z.+?z/g, function(cc)
+  {
+    if (cc == '-') return '.';
+    else if (cc.charAt(0) == 'z')
+    {
+      return String.fromCharCode(Number(cc.slice(1, -1)));
+    }
+    else
+    {
+      return cc;
+    }
+  });
 }
 
 exports.getAuthorClassName = function(author)
@@ -202,7 +226,7 @@ function authorNameFromClass(authorClass){ // turn authorClass into authorID the
   if(!name){
     return clientVars.collab_client_vars.historicalAuthorData[authorId].name || "Unknown Author"; // Try to use historical data
   }else{
-    return name;
+    return name || "Unknown Author";
   }
 }
 
