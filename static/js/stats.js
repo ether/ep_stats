@@ -8,6 +8,7 @@ exports.stats = {
   },
   show: function(){
     $('#stats').show();
+    exports.stats.update();
   },
   hide: function(){
     $('#stats').hide();
@@ -171,7 +172,7 @@ exports.getAuthorClassName = function(author)
 function tb(data){ // turns data object into a table
   var table = "<table>";
   for (var value in data){
-    table += "<tr><td>"+authorNameFromClass(value)+"</td><td>"+data[value]+"</td></tr>";
+    table += "<tr><td>"+authorNameFromClass(value)+":</td><td>"+data[value]+"</td></tr>";
   };
   table += "</table>";
   return table;
@@ -188,18 +189,20 @@ function authorNameFromClass(authorClass){ // turn authorClass into authorID the
   }
 
   // Not me, let's look up in the DOM
-  var authorObj = {};
+  var name = null;
   $('#otheruserstable > tbody > tr').each(function(){
     if (authorId == $(this).data("authorid")){
       $(this).find('.usertdname').each( function() {
-        var name = $(this).text();
-        if(name == "") name = "Unknown Author";
+        name = $(this).text();
       });
-      return name;
     }
   });
 
   // Else go historical
-  return clientVars.collab_client_vars.historicalAuthorData[authorId] || "Unknown Author"; // Try to use historical data
+  if(!name){
+    return clientVars.collab_client_vars.historicalAuthorData[authorId].name || "Unknown Author"; // Try to use historical data
+  }else{
+    return name;
+  }
 }
 
