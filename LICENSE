@@ -1,0 +1,24 @@
+#Commercial license.  OH noes..
+-------------------------------
+
+I am a core Etherpad contributor and have written 50+ open source Etherpad plugins, this is NOT an open source plugin.  Sorry!  I know it sucks so this plugin is under a hungry developer license
+
+## What is the hungry developer license?
+Sometimes a developer will self fund a plugin and release it under a commercial license.  That's what happened here.
+
+## Why am I releasing this as a commercial plugin?
+The implementation cost and time for this plugin was vast.  I need to recoup some of my costs.
+
+## Pricing
+The fee is $400 for each Etherpad instance.  An instance is defined as each node thread.  Not for profit (explicit not for profit = 801c3 or equivalent registration) pricing is $40.
+
+## Redistribution
+This code should not be implemented or redistriuted without express permission.
+
+## Warranty
+The warranty provided with this code is extremely limited, if it doesn't work for you, you have two options:
+1) Pay an hourly rate of 80$ to fix the plugin.
+2) Ask me for a refund within 30 days of purchase.
+
+## Contact
+Search for "John McLear" (me) on your favorite search engine.
