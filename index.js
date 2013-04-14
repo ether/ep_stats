@@ -17,6 +17,11 @@ exports.eejsBlock_styles = function (hook_name, args, cb) {
   return cb();
 };
 
+exports.eejsBlock_body = function (hook_name, args, cb) {
+  args.content = args.content + eejs.require("ep_stats/templates/stats.html", {}, module);
+  return cb();
+};
+
 exports.eejsBlock_mySettings = function (hook_name, args, cb) {
   if (!settings.ep_stats_default){
     checked_state = 'unchecked';

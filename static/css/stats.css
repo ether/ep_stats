@@ -4,8 +4,21 @@
   top:0;
   bottom:0;
   left:0;
-  right:0;
+  right:200;
   background-color:#fff;
   color:#000;
   padding:20px;
 }
+.stats{
+  float:right;
+  display:inline;
+}
+#stats > div > div{
+  line-height:20px;
+  padding:5px;
+}
+#stats > div > div > h2{
+  display:inline;
+}
+#stats > div > div:nth-child(even) {background: #CCC}
+#stats > div > div:nth-child(odd) {background: #FFF}
