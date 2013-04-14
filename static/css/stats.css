@@ -24,3 +24,7 @@
 }
 #stats > div > div:nth-child(even) {background: #CCC}
 #stats > div > div:nth-child(odd) {background: #FFF}
+
+.statsAuthorColor{
+  width:4px;
+}

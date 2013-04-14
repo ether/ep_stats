@@ -172,7 +172,7 @@ exports.getAuthorClassName = function(author)
 function tb(data){ // turns data object into a table
   var table = "<table>";
   for (var value in data){
-    table += "<tr><td>"+authorNameFromClass(value)+":</td><td>"+data[value]+"</td></tr>";
+    table += "<tr><td class='statsAuthorColor' style='background-color:"+authorColorFromClass(value)+"'></td><td>"+authorNameFromClass(value)+":</td><td>"+data[value]+"</td></tr>";
   };
   table += "</table>";
   return table;
@@ -203,6 +203,34 @@ function authorNameFromClass(authorClass){ // turn authorClass into authorID the
     return clientVars.collab_client_vars.historicalAuthorData[authorId].name || "Unknown Author"; // Try to use historical data
   }else{
     return name;
+  }
+}
+
+function authorColorFromClass(authorClass){ // turn authorClass into authorID then authorname..
+  // get the authorID from the class..
+  var authorId = exports.className2Author(authorClass);
+
+  // It could always be me..
+  var myAuthorId = pad.myUserInfo.userId;
+  if(myAuthorId == authorId){
+    return "#fff";
+  }
+
+  // Not me, let's look up in the DOM
+  var color = null;
+  $('#otheruserstable > tbody > tr').each(function(){
+    if (authorId == $(this).data("authorid")){
+      $(this).find('.usertdswatch > div').each( function() {
+        color = $(this).css("background-color");
+      });
+    }
+  });
+
+  // Else go historical
+  if(!color){
+    return clientVars.collab_client_vars.historicalAuthorData[authorId].color || "#fff"; // Try to use historical data
+  }else{
+    return color;
   }
 }
 
