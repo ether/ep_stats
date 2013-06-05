@@ -18,7 +18,7 @@ exports.stats = {
     var text = $('iframe[name="ace_outer"]').contents().find('iframe').contents().find("#innerdocbody").text();
     $('#length > .stats').html( text.replace(/\s/g,"").length );
     $('#lengthWhitespace > .stats').html( text.length );
-    $('#wordCount > .stats').html(text.split(" ").length);
+    $('#wordCount > .stats').html(text.split(/\s/).length);
     $('#revCount > .stats').html( pad.getCollabRevisionNumber() );
     $('#savedRevCount > .stats').html( clientVars.savedRevisions.length ); // TODO cake doesnt update in real time
     $('#authorCount > .stats').html( Object.keys(clientVars.collab_client_vars.historicalAuthorData).length );
