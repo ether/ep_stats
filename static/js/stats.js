@@ -18,7 +18,7 @@ exports.stats = {
     var text = $('iframe[name="ace_outer"]').contents().find('iframe').contents().find("#innerdocbody").text();
     $('#length > .stats').html( text.replace(/\s/g,"").length );
     $('#lengthWhitespace > .stats').html( text.length );
-    $('#wordCount > .stats').html(text.split(/\s/).length);
+    $('#wordCount > .stats').html( exports.wordCount());
     $('#revCount > .stats').html( pad.getCollabRevisionNumber() );
     $('#savedRevCount > .stats').html( clientVars.savedRevisions.length ); // TODO cake doesnt update in real time
     $('#authorCount > .stats').html( Object.keys(clientVars.collab_client_vars.historicalAuthorData).length );
@@ -28,6 +28,14 @@ exports.stats = {
     $('#numberOfCharsIncWS > .stats').html( tb(exports.stats.authors.numberOfChars()) );
     $('#numberOfCharsExcWS > .stats').html( tb(exports.stats.authors.numberOfCharsExcWS()) );
   }
+}
+
+
+exports.wordCount = function(){
+  var text = $('iframe[name="ace_outer"]').contents().find('iframe').contents().find("#innerdocbody").text();
+  var words = text.split(/\s/);
+  words.clean("");
+  return words.length;
 }
 
 exports.stats.authors = {
@@ -258,3 +266,13 @@ function authorColorFromClass(authorClass){ // turn authorClass into authorID th
   }
 }
 
+
+Array.prototype.clean = function(deleteValue) {
+  for (var i = 0; i < this.length; i++) {
+    if (this[i] == deleteValue) {         
+      this.splice(i, 1);
+      i--;
+    }
+  }
+  return this;
+};
