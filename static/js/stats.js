@@ -32,10 +32,17 @@ exports.stats = {
 
 
 exports.wordCount = function(){
-  var text = $('iframe[name="ace_outer"]').contents().find('iframe').contents().find("#innerdocbody").text();
-  var words = text.split(/\s/);
-  words.clean("");
-  return words.length;
+  var totalCount = 0;
+  $('iframe[name="ace_outer"]').contents().find('iframe').contents().find("#innerdocbody").contents().each(function(){
+    var lineCount = 0;
+    $(this).contents().each(function(){
+       var numberOf = $(this).text().split(" ");
+       numberOf = numberOf.clean(""); // dont include spaces or line breaks or other nastyness
+       lineCount += numberOf.length;
+    });
+    totalCount += lineCount;
+  });
+  return totalCount;
 }
 
 exports.stats.authors = {
@@ -276,3 +283,4 @@ Array.prototype.clean = function(deleteValue) {
   }
   return this;
 };
+
