@@ -9,7 +9,7 @@ exports.stats = {
   show: function(){
     $('#stats').show();
     $('#stats').css("top", $('#editorcontainer').offset().top+'px');
-    $('#options-stickychat').attr("checked","checked");
+//    $('#options-stickychat').attr("checked","checked");
     exports.stats.update();
   },
   hide: function(){
@@ -25,10 +25,10 @@ exports.stats = {
     $('#savedRevCount > .stats').html( clientVars.savedRevisions.length ); // TODO cake doesnt update in real time
     $('#authorCount > .stats').html( Object.keys(clientVars.collab_client_vars.historicalAuthorData).length );
     $('#wordsContributed > .stats').html( tb(exports.stats.authors.numberOfWords()) );
-//    $('#linesContributed > .stats').html( tb(exports.stats.authors.numberOfLines()) );
-//    $('#linesAsOnlyContributor > .stats').html( tb(exports.stats.authors.numberOfLinesExclusive()) );
-//    $('#numberOfCharsIncWS > .stats').html( tb(exports.stats.authors.numberOfChars()) );
-//    $('#numberOfCharsExcWS > .stats').html( tb(exports.stats.authors.numberOfCharsExcWS()) );
+    $('#linesContributed > .stats').html( tb(exports.stats.authors.numberOfLines()) );
+    $('#linesAsOnlyContributor > .stats').html( tb(exports.stats.authors.numberOfLinesExclusive()) );
+    $('#numberOfCharsIncWS > .stats').html( tb(exports.stats.authors.numberOfChars()) );
+    $('#numberOfCharsExcWS > .stats').html( tb(exports.stats.authors.numberOfCharsExcWS()) );
   }
 }
 
