@@ -54,17 +54,21 @@ exports.stats.authors = {
     // output format.  John -- 6, Dave -- 9
     $('iframe[name="ace_outer"]').contents().find('iframe').contents().find("#innerdocbody").contents().each(function(){
       $(this).contents().each(function(){
+        var line = this;
         var classes = $(this).attr("class");
         if(classes){
-          if( classes.indexOf("author") !== -1){ // if an author class exists on this span
-            // how many words are in this string?
-            var number = $(this).text().split(" ").length;
-            if( !results[ $(this).attr("class") ] ){
-              results[ $(this).attr("class").split(" ")[0] ] = number;
-            }else{
-              results[ $(this).attr("class").split(" ")[0] ] = results[ $(this).attr("class").split(" ")[0] ] + number;
+          classes = classes.split(" ");
+          $.each(classes, function(k, spanClass){
+            if( spanClass.indexOf("author") !== -1){ // if an author class exists on this span
+              // how many words are in this string?
+              var number = $(line).text().split(" ").length;
+              if( !results[ spanClass ] ){
+                results[ spanClass ] = number;
+              }else{
+                results[ spanClass ] = results[ spanClass ] + number;
+              }
             }
-          }
+          });
         }
       });
     });
@@ -75,18 +79,24 @@ exports.stats.authors = {
     // output format.  John -- 2, Dave -- 3
     $('iframe[name="ace_outer"]').contents().find('iframe').contents().find("#innerdocbody").contents().each(function(){ // each line
       $(this).contents().each(function(){
+        var line = this;
         var classes = $(this).attr("class");
         if(classes){
-          if( classes.indexOf("author") !== -1){ // if an author class exists on this span
-            // how many words are in this string?
-            if( !results[ $(this).attr("class") ] ){
-              results[ $(this).attr("class").split(" ")[0] ] = 1; // todo cake this is wrong
-            }else{
-              results[ $(this).attr("class").split(" ")[0] ] = results[ $(this).attr("class").split(" ")[0] ] + 1;
+          classes = classes.split(" ");
+          $.each(classes, function(k, spanClass){
+            if( spanClass.indexOf("author") !== -1){ // if an author class exists on this span
+              // how many words are in this string?
+              var number = $(line).text().split(" ").length;
+              if( !results[ spanClass ] ){
+                results[ spanClass ] = 1;
+              }else{
+                results[ spanClass ] = results[ spanClass ] + 1;
+              }
             }
-          }
+          });
         }
       });
+
     });
     return results;
 
@@ -100,14 +110,19 @@ exports.stats.authors = {
       $(this).contents().each(function(){ // For SPAN!
         var classes = $(this).attr("class");
         if(classes){
-          if( classes.indexOf("author") !== -1){ // if an author class exists on this span
-            if( !line[ lineCount ] ){
-              line[ lineCount ] = {};
-              line[ lineCount ].author = $(this).attr("class").split(" ")[0]; // first author!
-            }else{
-              delete line[ lineCount ];// already has an author so nuke!
+          classes = classes.split(" ");
+          $.each(classes, function(k, spanClass){
+            if( spanClass.indexOf("author") !== -1){ // if an author class exists on this span
+              if( !line[ lineCount ] ){
+                line[ lineCount ] = {};
+                line[ lineCount ].author = spanClass; // first author!
+              }else{
+                delete line[ lineCount ];// already has an author so nuke!
+              }
             }
-          }
+          });
+
+
         }
         // End Span
       });
@@ -129,15 +144,16 @@ exports.stats.authors = {
       $(this).contents().each(function(){
         var classes = $(this).attr("class");
         if(classes){
-          if( classes.indexOf("author") !== -1){ // if an author class exists on this span
-            var number = $(this).text().length;
-            if( !results[ $(this).attr("class") ] ){
-              results[ $(this).attr("class").split(" ")[0] ] = number;
+          classes = classes.split(" ");
+          var number = $(this).text().length;
+          $.each(classes, function(k, spanClass){
+            if( spanClass.indexOf("author") !== -1){ // if an author class exists on this span
+              results[ spanClass ] = number;
             }else{
-              results[ $(this).attr("class").split(" ")[0] ] = results[ $(this).attr("class").split(" ")[0] ] + number;
+              results[ spanClass ] = results [ spanClass] + 1;
             }
-          }
-        }
+          });
+        };
       });
     });
     return results;
@@ -149,14 +165,16 @@ exports.stats.authors = {
       $(this).contents().each(function(){
         var classes = $(this).attr("class");
         if(classes){
-          if( classes.indexOf("author") !== -1){ // if an author class exists on this span
-            var number = $(this).text().replace(/\s/g,"").length; // get length without whitespace
-            if( !results[ $(this).attr("class") ] ){
-              results[ $(this).attr("class").split(" ")[0] ] = number;
+ 
+          classes = classes.split(" ");
+          var number = $(this).text().replace(/\s/g,"").length; // get length without whitespace
+          $.each(classes, function(k, spanClass){
+            if( classes.indexOf("author") !== -1){ // if an author class exists on this span
+              results[ spanClass ] = number;
             }else{
-              results[ $(this).attr("class").split(" ")[0] ] = results[ $(this).attr("class").split(" ")[0] ] + number;
+              results[ spanClass ] = results[ spanClass] + number;
             }
-          }
+          });
         }
       });
     });
