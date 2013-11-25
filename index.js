@@ -34,3 +34,7 @@ exports.eejsBlock_mySettings = function (hook_name, args, cb) {
   return cb();
 }
 
+
+exports.eejsBlock_dd_view = function (hook_name, args, cb){
+  args.content = args.content + "<li><a href='#' onClick='$(\"#options-stats\").click();'>Pad Statistics</a></li>";
+}

@@ -11,5 +11,16 @@
     "type": "git",
     "url": "https://github.com/johnmclear/ep_stats"
   },
-  "contributors": []
+  "contributors": [],
+  "readme": "Pad Stats in Etherpad\n=====================\n\nTo enable Stats view click Settings -> Show Pad and Author Stats\n\nSetting as default\n==================\nPaste the below into your settings.\n\nep_stats_default: \"true\",\n\ntodo\n====\n* All the things\n\nContact me to sponsor dev.\n",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/johnmclear/ep_stats/issues"
+  },
+  "_id": "ep_stats@0.0.1",
+  "dist": {
+    "shasum": "b616d0a993bc2c13de78825cac31164d34f7e68a"
+  },
+  "_from": "ep_stats@",
+  "_resolved": "https://registry.npmjs.org/ep_stats/-/ep_stats-0.0.1.tgz"
 }

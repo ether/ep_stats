@@ -8,6 +8,8 @@ exports.stats = {
   },
   show: function(){
     $('#stats').show();
+    $('#stats').css("top", $('#editorcontainer').offset().top+'px');
+    $('#options-stickychat').attr("checked","checked");
     exports.stats.update();
   },
   hide: function(){
