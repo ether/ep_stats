@@ -25,10 +25,10 @@ exports.stats = {
     $('#savedRevCount > .stats').html( clientVars.savedRevisions.length ); // TODO cake doesnt update in real time
     $('#authorCount > .stats').html( Object.keys(clientVars.collab_client_vars.historicalAuthorData).length );
     $('#wordsContributed > .stats').html( tb(exports.stats.authors.numberOfWords()) );
-    $('#linesContributed > .stats').html( tb(exports.stats.authors.numberOfLines()) );
-    $('#linesAsOnlyContributor > .stats').html( tb(exports.stats.authors.numberOfLinesExclusive()) );
-    $('#numberOfCharsIncWS > .stats').html( tb(exports.stats.authors.numberOfChars()) );
-    $('#numberOfCharsExcWS > .stats').html( tb(exports.stats.authors.numberOfCharsExcWS()) );
+//    $('#linesContributed > .stats').html( tb(exports.stats.authors.numberOfLines()) );
+//    $('#linesAsOnlyContributor > .stats').html( tb(exports.stats.authors.numberOfLinesExclusive()) );
+//    $('#numberOfCharsIncWS > .stats').html( tb(exports.stats.authors.numberOfChars()) );
+//    $('#numberOfCharsExcWS > .stats').html( tb(exports.stats.authors.numberOfCharsExcWS()) );
   }
 }
 
@@ -60,9 +60,9 @@ exports.stats.authors = {
             // how many words are in this string?
             var number = $(this).text().split(" ").length;
             if( !results[ $(this).attr("class") ] ){
-              results[ $(this).attr("class") ] = number;
+              results[ $(this).attr("class").split(" ")[0] ] = number;
             }else{
-              results[ $(this).attr("class") ] = results[ $(this).attr("class") ] + number;
+              results[ $(this).attr("class").split(" ")[0] ] = results[ $(this).attr("class").split(" ")[0] ] + number;
             }
           }
         }
@@ -80,9 +80,9 @@ exports.stats.authors = {
           if( classes.indexOf("author") !== -1){ // if an author class exists on this span
             // how many words are in this string?
             if( !results[ $(this).attr("class") ] ){
-              results[ $(this).attr("class") ] = 1; // todo cake this is wrong
+              results[ $(this).attr("class").split(" ")[0] ] = 1; // todo cake this is wrong
             }else{
-              results[ $(this).attr("class") ] = results[ $(this).attr("class") ] + 1;
+              results[ $(this).attr("class").split(" ")[0] ] = results[ $(this).attr("class").split(" ")[0] ] + 1;
             }
           }
         }
@@ -103,7 +103,7 @@ exports.stats.authors = {
           if( classes.indexOf("author") !== -1){ // if an author class exists on this span
             if( !line[ lineCount ] ){
               line[ lineCount ] = {};
-              line[ lineCount ].author = $(this).attr("class"); // first author!
+              line[ lineCount ].author = $(this).attr("class").split(" ")[0]; // first author!
             }else{
               delete line[ lineCount ];// already has an author so nuke!
             }
@@ -132,9 +132,9 @@ exports.stats.authors = {
           if( classes.indexOf("author") !== -1){ // if an author class exists on this span
             var number = $(this).text().length;
             if( !results[ $(this).attr("class") ] ){
-              results[ $(this).attr("class") ] = number;
+              results[ $(this).attr("class").split(" ")[0] ] = number;
             }else{
-              results[ $(this).attr("class") ] = results[ $(this).attr("class") ] + number;
+              results[ $(this).attr("class").split(" ")[0] ] = results[ $(this).attr("class").split(" ")[0] ] + number;
             }
           }
         }
@@ -152,9 +152,9 @@ exports.stats.authors = {
           if( classes.indexOf("author") !== -1){ // if an author class exists on this span
             var number = $(this).text().replace(/\s/g,"").length; // get length without whitespace
             if( !results[ $(this).attr("class") ] ){
-              results[ $(this).attr("class") ] = number;
+              results[ $(this).attr("class").split(" ")[0] ] = number;
             }else{
-              results[ $(this).attr("class") ] = results[ $(this).attr("class") ] + number;
+              results[ $(this).attr("class").split(" ")[0] ] = results[ $(this).attr("class").split(" ")[0] ] + number;
             }
           }
         }
