@@ -1,7 +1,7 @@
 {
   "name": "ep_stats_uci",
   "description": "See pad Stats in Etherpad - inc support for summary, commentary, evidence and synthesis",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": {
     "name": "John McLear",
     "email": "john@mclear.co.uk",

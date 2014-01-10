@@ -419,4 +419,4 @@ exports.collectContentPre = function(hook, context){
 };
 
 
-exports.aceEditorCSS = function(hook_name, cb){return ["/ep_stats/static/css/ace.css"];} // inner pad CSS
+exports.aceEditorCSS = function(hook_name, cb){return ["/ep_stats_uci/static/css/ace.css"];} // inner pad CSS
