@@ -4,7 +4,7 @@
   position:fixed;
   bottom:0;
   right:20px;
-  width:300px;
+  width:150px;
   background-color:#fff;
   color:#000;
   padding:20px;
@@ -21,8 +21,6 @@
 #stats > div > div > h2{
   display:inline;
 }
-#stats > div > div:nth-child(even) {background: #CCC}
-#stats > div > div:nth-child(odd) {background: #FFF}
 
 .statsAuthorColor{
   width:4px;
@@ -46,4 +44,7 @@
 }
 #synthesis > a{
   color:#000;
+}
+#wordCount{
+  display:none;
 }

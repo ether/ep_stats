@@ -29,7 +29,6 @@ exports.wordCount = function(){
   var summaryCount = 0;
   var commentaryCount = 0;
   var evidenceCount = 0;
-  var synthesisCount = 0;
 
   $('iframe[name="ace_outer"]').contents().find('iframe').contents().find("#innerdocbody").contents().each(function(){
     var lineCount = 0;
@@ -50,11 +49,6 @@ exports.wordCount = function(){
            var numberOf = $(this).text().split(" ");
            numberOf = numberOf.clean(""); // dont include spaces or line breaks or other nastyness
            evidenceCount += numberOf.length;
-         }
-         if(classes.indexOf("synthesis") !== -1){
-           var numberOf = $(this).text().split(" ");
-           numberOf = numberOf.clean(""); // dont include spaces or line breaks or other nastyness
-           synthesisCount += numberOf.length;
          }
        }
        var numberOf = $(this).text().split(" ");
@@ -78,29 +72,22 @@ exports.wordCount = function(){
   }else{
     $('#commentaryCount > .stats').text(0);
   }
-  if(synthesisCount){
-    $('#synthesisCount > .stats').text(synthesisCount);
-  }else{
-    $('#synthesisCount > .stats').text(0);
-  }
 
   // Next to update percentages..
   setTimeout(function(){
 
   var wordCount = parseInt($('#wordCount > .stats').text());
-  var unmarkedCount = wordCount - summaryCount - commentaryCount - evidenceCount - synthesisCount;
+  var unmarkedCount = wordCount - summaryCount - commentaryCount - evidenceCount;
   $('#unmarkedCount > .stats').text(unmarkedCount);
 
-  var summaryP = (summaryCount / wordCount)*100;
-  $('#summaryP > .stats').text(Math.round(summaryP));
-  var commentaryP = (commentaryCount / wordCount)*100;
-  $('#commentaryP > .stats').text(Math.round(commentaryP));
-  var evidenceP = (evidenceCount / wordCount)*100;
-  $('#evidenceP > .stats').text(Math.round(evidenceP));
-  var synthesisP = (synthesisCount / wordCount)*100;
-  $('#synthesisP > .stats').text(Math.round(synthesisP));
-  var unmarkedP = (unmarkedCount / wordCount)*100;
-  $('#unmarkedP > .stats').text(Math.round(unmarkedP));
+  var summaryP = (summaryCount / wordCount)*100 || 0;
+  $('#summaryP > .stats').text(Math.round(summaryP) + "%");
+  var commentaryP = (commentaryCount / wordCount)*100 || 0;
+  $('#commentaryP > .stats').text(Math.round(commentaryP) + "%");
+  var evidenceP = (evidenceCount / wordCount)*100 || 0;
+  $('#evidenceP > .stats').text(Math.round(evidenceP) + "%");
+  var unmarkedP = (unmarkedCount / wordCount)*100 || 0;
+  $('#unmarkedP > .stats').text(Math.round(unmarkedP) + "%");
   }, 100);
 
   return totalCount;
@@ -254,9 +241,6 @@ exports.aceAttribsToClasses = function(hook, context){
   if(context.key == 'evidence'){
     return ['evidence'];
   }
-  if(context.key == 'synthesis'){
-    return ['synthesis'];
-  }
 }
 
 exports.postAceInit = function(hook, context){
@@ -279,15 +263,15 @@ exports.postAceInit = function(hook, context){
     var attr = this.id;
     // remove all other attr and apply the new attr
     context.ace.callWithAce(function(ace){
-console.log(ace);
       var rep = ace.ace_getRep(); // get the current user selection
       var isSelection = (rep.selStart[0] !== rep.selEnd[0] || rep.selStart[1] !== rep.selEnd[1]);
       if(!isSelection) return false; // No point proceeding if no selection..
       ace.ace_setAttributeOnSelection("summary", false); // set the attribute to false
       ace.ace_setAttributeOnSelection("commentary", false); // set the attribute to false
       ace.ace_setAttributeOnSelection("evidence", false); // set the attribute to false
-      ace.ace_setAttributeOnSelection("synthesis", false); // set the attribute to false
-      ace.ace_toggleAttributeOnSelection(attr); // set the attribute to false
+      if(attr !== "synthesis"){ // synthesis does nothing so you end up with unmarked text
+        ace.ace_toggleAttributeOnSelection(attr); // set the attribute to false
+      }
     },'ogreFunk' , true);
   });
 }
