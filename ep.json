@@ -3,20 +3,20 @@
     {
       "name": "stats",
       "hooks":{
-        "expressCreateServer": "ep_stats/express",
-        "eejsBlock_scripts": "ep_stats/index",
-        "eejsBlock_mySettings": "ep_stats/index",
-        "eejsBlock_styles":"ep_stats/index",
-        "eejsBlock_editbarMenuLeft":"ep_stats/index",
-        "eejsBlock_body":"ep_stats/index",
-        "eejsBlock_dd_view":"ep_stats/index"
+        "expressCreateServer": "ep_stats_uci/express",
+        "eejsBlock_scripts": "ep_stats_uci/index",
+        "eejsBlock_mySettings": "ep_stats_uci/index",
+        "eejsBlock_styles":"ep_stats_uci/index",
+        "eejsBlock_editbarMenuLeft":"ep_stats_uci/index",
+        "eejsBlock_body":"ep_stats_uci/index",
+        "eejsBlock_dd_view":"ep_stats_uci/index"
       },
       "client_hooks": {
-        "postAceInit": "ep_stats/static/js/stats",
-        "aceEditEvent": "ep_stats/static/js/stats",
-        "aceAttribsToClasses": "ep_stats/static/js/stats",
-        "collectContentPre": "ep_stats/static/js/stats",
-        "aceEditorCSS": "ep_stats/static/js/stats"
+        "postAceInit": "ep_stats_uci/static/js/stats",
+        "aceEditEvent": "ep_stats_uci/static/js/stats",
+        "aceAttribsToClasses": "ep_stats_uci/static/js/stats",
+        "collectContentPre": "ep_stats_uci/static/js/stats",
+        "aceEditorCSS": "ep_stats_uci/static/js/stats"
       }
     }
   ]
