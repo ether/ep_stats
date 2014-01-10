@@ -9,7 +9,6 @@ exports.stats = {
   show: function(){
     $('#stats').show();
     $('#stats').css("top", $('#editorcontainer').offset().top+'px');
-//    $('#options-stickychat').attr("checked","checked");
     exports.stats.update();
   },
   hide: function(){
@@ -21,34 +20,82 @@ exports.stats = {
     $('#length > .stats').html( text.replace(/\s/g,"").length );
     $('#lengthWhitespace > .stats').html( text.length );
     $('#wordCount > .stats').html( exports.wordCount());
-    $('#revCount > .stats').html( pad.getCollabRevisionNumber() );
-    $('#savedRevCount > .stats').html( clientVars.savedRevisions.length ); // TODO cake doesnt update in real time
-    $('#authorCount > .stats').html( Object.keys(clientVars.collab_client_vars.historicalAuthorData).length );
-    $('#wordsContributed > .stats').html( tb(exports.stats.authors.numberOfWords()) );
-    $('#linesContributed > .stats').html( tb(exports.stats.authors.numberOfLines()) );
-    $('#linesAsOnlyContributor > .stats').html( tb(exports.stats.authors.numberOfLinesExclusive()) );
-    $('#numberOfCharsIncWS > .stats').html( tb(exports.stats.authors.numberOfChars()) );
-    $('#numberOfCharsExcWS > .stats').html( tb(exports.stats.authors.numberOfCharsExcWS()) );
   }
 }
 
 
 exports.wordCount = function(){
   var totalCount = 0;
+  var summaryCount = 0;
+  var commentaryCount = 0;
+  var evidenceCount = 0;
+  var synthesisCount = 0;
+
   $('iframe[name="ace_outer"]').contents().find('iframe').contents().find("#innerdocbody").contents().each(function(){
     var lineCount = 0;
-    $(this).contents().each(function(){
+    $(this).contents().each(function(){ // each span.
+       var classes = $(this).attr("class");
+       if(classes){
+console.log(classes);
+         if(classes.indexOf("summary") !== -1){
+           var numberOf = $(this).text().split(" ");
+           numberOf = numberOf.clean(""); // dont include spaces or line breaks or other nastyness
+           summaryCount += numberOf.length;
+         }
+         if(classes.indexOf("commentary") !== -1){
+           var numberOf = $(this).text().split(" ");
+           numberOf = numberOf.clean(""); // dont include spaces or line breaks or other nastyness
+           commentaryCount += numberOf.length;
+         }
+         if(classes.indexOf("evidence") !== -1){
+           var numberOf = $(this).text().split(" ");
+           numberOf = numberOf.clean(""); // dont include spaces or line breaks or other nastyness
+           evidenceCount += numberOf.length;
+         }
+         if(classes.indexOf("synthesis") !== -1){
+           var numberOf = $(this).text().split(" ");
+           numberOf = numberOf.clean(""); // dont include spaces or line breaks or other nastyness
+           synthesisCount += numberOf.length;
+         }
+
+       }
        var numberOf = $(this).text().split(" ");
        numberOf = numberOf.clean(""); // dont include spaces or line breaks or other nastyness
        lineCount += numberOf.length;
     });
     totalCount += lineCount;
   });
+  if(summaryCount){
+    $('#summaryCount > .stats').text(summaryCount).show();
+    $('#summaryCount').show();
+  }else{
+    $('#summaryCount').hide();
+  }
+  if(commentaryCount){
+    $('#commentaryCount > .stats').text(commentaryCount).show();
+    $('#commentaryCount').show();
+  }else{
+    $('#commentaryCount').hide();
+  }
+  if(evidenceCount){
+    $('#evidenceCount > .stats').text(evidenceCount).show();
+    $('#evidenceCount').show();
+  }else{
+    $('#evidenceCount').hide();
+  }
+  if(synthesisCount){
+    $('#synthesisCount > .stats').text(synthesisCount).show();
+    $('#synthesisCount').show();
+  }else{
+    $('#synthesisCount').hide();
+  }
+
   return totalCount;
 }
 
 exports.stats.authors = {
   numberOfWords: function(){
+    /*
     var results = {};
     // go through each word, does it have the class of this author?
     // output format.  John -- 6, Dave -- 9
@@ -73,6 +120,7 @@ exports.stats.authors = {
       });
     });
     return results;
+    */
   },
   numberOfLines: function(){
     var results = {};
@@ -182,7 +230,27 @@ exports.stats.authors = {
   }
 }
 
+// Our lineHeights attribute will result in a heaading:h1... :h6 class
+exports.aceAttribsToClasses = function(hook, context){
+  if(context.key == 'summary'){
+    return ['summary'];
+  }
+  if(context.key == 'commentary'){
+    return ['commentary'];
+  }
+  if(context.key == 'evidence'){
+    return ['evidence'];
+  }
+  if(context.key == 'synthesis'){
+    return ['synthesis'];
+  }
+}
+
 exports.postAceInit = function(hook, context){
+  $('#options-stats').attr('checked', true);
+  exports.stats.show();
+  $('#clearAuthorship').hide();
+  pad.changeViewOption('showAuthorColors', false);
   stats = exports.stats;
 
   /* on click */
@@ -192,6 +260,22 @@ exports.postAceInit = function(hook, context){
     } else {
       stats.hide();
     }
+  });
+
+  $('#statButtons > li').click(function(){
+    var attr = this.id;
+    // remove all other attr and apply the new attr
+    context.ace.callWithAce(function(ace){
+console.log(ace);
+      var rep = ace.ace_getRep(); // get the current user selection
+      var isSelection = (rep.selStart[0] !== rep.selEnd[0] || rep.selStart[1] !== rep.selEnd[1]);
+      if(!isSelection) return false; // No point proceeding if no selection..
+      ace.ace_setAttributeOnSelection("summary", false); // set the attribute to false
+      ace.ace_setAttributeOnSelection("commentary", false); // set the attribute to false
+      ace.ace_setAttributeOnSelection("evidence", false); // set the attribute to false
+      ace.ace_setAttributeOnSelection("synthesis", false); // set the attribute to false
+      ace.ace_toggleAttributeOnSelection(attr); // set the attribute to false
+    },'ogreFunk' , true);
   });
 }
 
@@ -239,6 +323,7 @@ function tb(data){ // turns data object into a table
 
 function authorNameFromClass(authorClass){ // turn authorClass into authorID then authorname..
   // get the authorID from the class..
+  /*
   var authorId = exports.className2Author(authorClass);
 
   // It could always be me..
@@ -263,10 +348,12 @@ function authorNameFromClass(authorClass){ // turn authorClass into authorID the
   }else{
     return name || "Unknown Author";
   }
+  */
 }
 
 function authorColorFromClass(authorClass){ // turn authorClass into authorID then authorname..
   // get the authorID from the class..
+  /*
   var authorId = exports.className2Author(authorClass);
 
   // It could always be me..
@@ -291,6 +378,7 @@ function authorColorFromClass(authorClass){ // turn authorClass into authorID th
   }else{
     return color;
   }
+  */
 }
 
 
@@ -304,3 +392,18 @@ Array.prototype.clean = function(deleteValue) {
   return this;
 };
 
+
+
+exports.collectContentPre = function(hook, context){
+  var tname = context.tname;
+  var state = context.state;
+  var lineAttributes = state.lineAttributes
+  var tagIndex = tname;
+
+  if(tname == "summary"){
+    context.cc.doAttrib(state, "summary");
+  }
+};
+
+
+exports.aceEditorCSS = function(hook_name, cb){return ["/ep_stats/static/css/ace.css"];} // inner pad CSS

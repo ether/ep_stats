@@ -27,3 +27,23 @@
 .statsAuthorColor{
   width:4px;
 }
+#statButtons > li{
+  font-size:14px;
+}
+
+#summary > a{
+  background:#ffff00;
+  color:#000;
+}
+
+#commentary > a{
+  background:#9999FF;
+  color:#000;
+}
+#evidence > a{
+  background:#33ff33;
+  color:#000;
+}
+#synthesis > a{
+  color:#000;
+}
