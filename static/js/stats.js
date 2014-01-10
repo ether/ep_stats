@@ -36,7 +36,6 @@ exports.wordCount = function(){
     $(this).contents().each(function(){ // each span.
        var classes = $(this).attr("class");
        if(classes){
-console.log(classes);
          if(classes.indexOf("summary") !== -1){
            var numberOf = $(this).text().split(" ");
            numberOf = numberOf.clean(""); // dont include spaces or line breaks or other nastyness
@@ -57,7 +56,6 @@ console.log(classes);
            numberOf = numberOf.clean(""); // dont include spaces or line breaks or other nastyness
            synthesisCount += numberOf.length;
          }
-
        }
        var numberOf = $(this).text().split(" ");
        numberOf = numberOf.clean(""); // dont include spaces or line breaks or other nastyness
@@ -66,29 +64,44 @@ console.log(classes);
     totalCount += lineCount;
   });
   if(summaryCount){
-    $('#summaryCount > .stats').text(summaryCount).show();
-    $('#summaryCount').show();
+    $('#summaryCount > .stats').text(summaryCount);
   }else{
-    $('#summaryCount').hide();
+    $('#summaryCount > .stats').text(0);
   }
   if(commentaryCount){
-    $('#commentaryCount > .stats').text(commentaryCount).show();
-    $('#commentaryCount').show();
+    $('#commentaryCount > .stats').text(commentaryCount);
   }else{
-    $('#commentaryCount').hide();
+    $('#commentaryCount > .stats').text(0);
   }
   if(evidenceCount){
-    $('#evidenceCount > .stats').text(evidenceCount).show();
-    $('#evidenceCount').show();
+    $('#evidenceCount > .stats').text(evidenceCount);
   }else{
-    $('#evidenceCount').hide();
+    $('#commentaryCount > .stats').text(0);
   }
   if(synthesisCount){
-    $('#synthesisCount > .stats').text(synthesisCount).show();
-    $('#synthesisCount').show();
+    $('#synthesisCount > .stats').text(synthesisCount);
   }else{
-    $('#synthesisCount').hide();
+    $('#synthesisCount > .stats').text(0);
   }
+
+  // Next to update percentages..
+  setTimeout(function(){
+
+  var wordCount = parseInt($('#wordCount > .stats').text());
+  var unmarkedCount = wordCount - summaryCount - commentaryCount - evidenceCount - synthesisCount;
+  $('#unmarkedCount > .stats').text(unmarkedCount);
+
+  var summaryP = (summaryCount / wordCount)*100;
+  $('#summaryP > .stats').text(Math.round(summaryP));
+  var commentaryP = (commentaryCount / wordCount)*100;
+  $('#commentaryP > .stats').text(Math.round(commentaryP));
+  var evidenceP = (evidenceCount / wordCount)*100;
+  $('#evidenceP > .stats').text(Math.round(evidenceP));
+  var synthesisP = (synthesisCount / wordCount)*100;
+  $('#synthesisP > .stats').text(Math.round(synthesisP));
+  var unmarkedP = (unmarkedCount / wordCount)*100;
+  $('#unmarkedP > .stats').text(Math.round(unmarkedP));
+  }, 100);
 
   return totalCount;
 }
