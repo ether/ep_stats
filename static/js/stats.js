@@ -245,6 +245,7 @@ exports.aceAttribsToClasses = function(hook, context){
 
 exports.postAceInit = function(hook, context){
   $('#options-stats').attr('checked', true);
+  $('#editorcontainer').css({"right":"192px"});
   exports.stats.show();
   $('#clearAuthorship').hide();
   pad.changeViewOption('showAuthorColors', false);
