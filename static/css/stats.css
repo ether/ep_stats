@@ -53,10 +53,17 @@
 #print > div > .summary{ color:orange; }
 #print > div > .commentary{ color:blue; }
 #print > div > .evidence{ color:green; }
-#print > div > .unmarked{ color:orange; }
+#print > div > .unmarked{ color:black; }
 
 @media print{
+  #summaryP{ color:orange; }
+  #commentaryP{ color:blue }
+  #evidenceP{ color:green; }
+  #unmarkedP{ color:black; }
+  #stats{right:0;position:relative;width:100%;padding:0;top:auto !important;height:auto;margin-bottom:50px;}
+/*
   #stats{
     display:none !important;
   }
+*/
 }
