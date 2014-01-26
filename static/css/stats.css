@@ -49,3 +49,14 @@
 #wordCount{
   display:none;
 }
+
+#print > div > .summary{ color:orange; }
+#print > div > .commentary{ color:blue; }
+#print > div > .evidence{ color:green; }
+#print > div > .unmarked{ color:orange; }
+
+@media print{
+  #stats{
+    display:none !important;
+  }
+}
