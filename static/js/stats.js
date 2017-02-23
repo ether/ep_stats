@@ -39,7 +39,7 @@ exports.wordCount = function(){
     var lineCount = 0;
     $(this).contents().each(function(){
        var numberOf = $(this).text().split(" ");
-       numberOf = numberOf.clean(""); // dont include spaces or line breaks or other nastyness
+       numberOf = arrayDelete(numberOf, ""); // dont include spaces or line breaks or other nastyness
        lineCount += numberOf.length;
     });
     totalCount += lineCount;
@@ -292,13 +292,12 @@ function authorColorFromClass(authorClass){ // turn authorClass into authorID th
 }
 
 
-Array.prototype.clean = function(deleteValue) {
+function arrayDelete(array, deleteValue) {
   for (var i = 0; i < this.length; i++) {
-    if (this[i] == deleteValue) {         
+    if (this[i] == deleteValue) {
       this.splice(i, 1);
       i--;
     }
   }
   return this;
-};
-
+}
