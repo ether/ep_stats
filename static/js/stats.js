@@ -256,13 +256,12 @@ function authorNameFromClass(authorClass){ // turn authorClass into authorID the
       });
     }
   });
+  if (name)
+      return name;
 
   // Else go historical
-  if(!name){
-    return clientVars.collab_client_vars.historicalAuthorData[authorId].name || "Unknown Author"; // Try to use historical data
-  }else{
-    return name || "Unknown Author";
-  }
+  var historical = clientVars.collab_client_vars.historicalAuthorData[authorId];
+  return (historical && historical.name) || "Unknown Author";
 }
 
 function authorColorFromClass(authorClass){ // turn authorClass into authorID then authorname..
@@ -284,13 +283,12 @@ function authorColorFromClass(authorClass){ // turn authorClass into authorID th
       });
     }
   });
+  if (color)
+    return color;
 
   // Else go historical
-  if(!color){
-    return clientVars.collab_client_vars.historicalAuthorData[authorId].color || "#fff"; // Try to use historical data
-  }else{
-    return color;
-  }
+  var historical = clientVars.collab_client_vars.historicalAuthorData[authorId];
+  return (historical && historical.color) || "#fff";
 }
 
 
