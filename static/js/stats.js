@@ -1,21 +1,21 @@
-if(typeof exports == 'undefined'){
-  var exports = this['mymodule'] = {};
+if (typeof exports === 'undefined') {
+  var exports = this.mymodule = {};
 }
 
 exports.stats = {
-  init: function(){
+  init(){
     stats.update();
   },
-  show: function(){
+  show(){
     $('#stats').show();
     $('#stats').css("top", $('#editorcontainer').offset().top+'px');
 //    $('#options-stickychat').attr("checked","checked");
     exports.stats.update();
   },
-  hide: function(){
+  hide(){
     $('#stats').hide();
   },
-  update: function(){
+  update(){
     var html = $('iframe[name="ace_outer"]').contents().find('iframe').contents().find("#innerdocbody").html();
     var text = $('iframe[name="ace_outer"]').contents().find('iframe').contents().find("#innerdocbody").text();
     $('#length > .stats').html( text.replace(/\s/g,"").length );
@@ -30,25 +30,25 @@ exports.stats = {
     $('#numberOfCharsIncWS > .stats').html( tb(exports.stats.authors.numberOfChars()) );
     $('#numberOfCharsExcWS > .stats').html( tb(exports.stats.authors.numberOfCharsExcWS()) );
   }
-}
+};
 
 
-exports.wordCount = function(){
-  var totalCount = 0;
-  $('iframe[name="ace_outer"]').contents().find('iframe').contents().find("#innerdocbody").contents().each(function(){
-    var lineCount = 0;
-    $(this).contents().each(function(){
-       var numberOf = $(this).text().split(" ");
-       numberOf = arrayDelete(numberOf, ""); // dont include spaces or line breaks or other nastyness
-       lineCount += numberOf.length;
+exports.wordCount = function () {
+  let totalCount = 0;
+  $('iframe[name="ace_outer"]').contents().find('iframe').contents().find('#innerdocbody').contents().each(function () {
+    let lineCount = 0;
+    $(this).contents().each(function () {
+      var numberOf = $(this).text().split(' ');
+      numberOf = arrayDelete(numberOf, ''); // dont include spaces or line breaks or other nastyness
+      lineCount += numberOf.length;
     });
     totalCount += lineCount;
   });
   return totalCount;
-}
+};
 
 exports.stats.authors = {
-  numberOfWords: function(){
+  numberOfWords(){
     var results = {};
     // go through each word, does it have the class of this author?
     // output format.  John -- 6, Dave -- 9
@@ -74,7 +74,7 @@ exports.stats.authors = {
     });
     return results;
   },
-  numberOfLines: function(){
+  numberOfLines(){
     var results = {};
     // output format.  John -- 2, Dave -- 3
     $('iframe[name="ace_outer"]').contents().find('iframe').contents().find("#innerdocbody").contents().each(function(){ // each line
@@ -101,7 +101,7 @@ exports.stats.authors = {
     return results;
 
   },
-  numberOfLinesExclusive: function(){
+  numberOfLinesExclusive(){
     var results = {};
     var lineCount = 1;
     // output format.  John -- 1, Dave -- 1
@@ -137,7 +137,7 @@ exports.stats.authors = {
     });
     return results;
   },
-  numberOfChars: function(){
+  numberOfChars(){
     var results = {};
     // output format.  John -- 6, Dave -- 9
     $('iframe[name="ace_outer"]').contents().find('iframe').contents().find("#innerdocbody").contents().each(function(){
@@ -158,7 +158,7 @@ exports.stats.authors = {
     });
     return results;
   },
-  numberOfCharsExcWS: function(){
+  numberOfCharsExcWS(){
     var results = {};
     // output format.  John -- 6, Dave -- 9
     $('iframe[name="ace_outer"]').contents().find('iframe').contents().find("#innerdocbody").contents().each(function(){ 
@@ -180,120 +180,113 @@ exports.stats.authors = {
     });
     return results;
   }
-}
+};
 
-exports.postAceInit = function(hook, context){
+exports.postAceInit = function (hook, context) {
   stats = exports.stats;
 
   /* on click */
-  $('#options-stats').on('click', function() {
-    if($('#options-stats').is(':checked')) {
+  $('#options-stats').on('click', () => {
+    if ($('#options-stats').is(':checked')) {
       stats.show();
     } else {
       stats.hide();
     }
   });
-}
+};
 
-exports.aceEditEvent = function(hook_name, event, cb){
-  if($('#options-stats').is(':checked')) { // if stats are enabled
-    if(event.callstack.docTextChanged && event.callstack.domClean){
+exports.aceEditEvent = function (hook_name, event, cb) {
+  if ($('#options-stats').is(':checked')) { // if stats are enabled
+    if (event.callstack.docTextChanged && event.callstack.domClean) {
       exports.stats.update();
     }
   }
-}
+};
 
-exports.className2Author = function(className)
-{
-  return className.substring(7).replace(/[a-y0-9]+|-|z.+?z/g, function(cc)
-  {
-    if (cc == '-') return '.';
-    else if (cc.charAt(0) == 'z')
-    {
+exports.className2Author = function (className) {
+  return className.substring(7).replace(/[a-y0-9]+|-|z.+?z/g, (cc)
+  => {
+    if (cc == '-') {return '.';}
+    else if (cc.charAt(0) == 'z') {
       return String.fromCharCode(Number(cc.slice(1, -1)));
-    }
-    else
-    {
+    } else {
       return cc;
     }
   });
-}
+};
 
-exports.getAuthorClassName = function(author)
-{
-  return "ep_cursortrace-" + author.replace(/[^a-y0-9]/g, function(c)
-  {
-    if (c == ".") return "-";
-    return 'z' + c.charCodeAt(0) + 'z';
+exports.getAuthorClassName = function (author) {
+  return 'ep_cursortrace-' + author.replace(/[^a-y0-9]/g, (c)
+  => {
+    if (c == '.') return '-';
+    return `z${  c.charCodeAt(0)  }z`;
   });
-}
+};
 
-function tb(data){ // turns data object into a table
-  var table = "<table>";
-  for (var value in data){
-    table += "<tr><td class='statsAuthorColor' style='background-color:"+authorColorFromClass(value)+"'></td><td>"+authorNameFromClass(value)+":</td><td>"+data[value]+"</td></tr>";
-  };
-  table += "</table>";
+function tb(data) { // turns data object into a table
+  let table = '<table>';
+  for (let value in data) {
+    table += `<tr><td class='statsAuthorColor' style='background-color:${authorColorFromClass(value)}'></td><td>${authorNameFromClass(value)}:</td><td>${data[value]}</td></tr>`;
+  }
+  table += '</table>';
   return table;
 }
 
-function authorNameFromClass(authorClass){ // turn authorClass into authorID then authorname..
+function authorNameFromClass(authorClass) { // turn authorClass into authorID then authorname..
   // get the authorID from the class..
-  var authorId = exports.className2Author(authorClass);
+  let authorId = exports.className2Author(authorClass);
 
   // It could always be me..
-  var myAuthorId = pad.myUserInfo.userId;
-  if(myAuthorId == authorId){
-    return "Me";
+  let myAuthorId = pad.myUserInfo.userId;
+  if (myAuthorId == authorId) {
+    return 'Me';
   }
 
   // Not me, let's look up in the DOM
-  var name = null;
-  $('#otheruserstable > tbody > tr').each(function(){
-    if (authorId == $(this).data("authorid")){
-      $(this).find('.usertdname').each( function() {
+  let name = null;
+  $('#otheruserstable > tbody > tr').each(function () {
+    if (authorId == $(this).data('authorid')) {
+      $(this).find('.usertdname').each(function () {
         name = $(this).text();
       });
     }
   });
-  if (name)
-      return name;
+  if (name) return name;
 
   // Else go historical
-  var historical = clientVars.collab_client_vars.historicalAuthorData[authorId];
-  return (historical && historical.name) || "Unknown Author";
+  let historical = clientVars.collab_client_vars.historicalAuthorData[authorId];
+  return (historical && historical.name) || 'Unknown Author';
 }
 
-function authorColorFromClass(authorClass){ // turn authorClass into authorID then authorname..
+function authorColorFromClass(authorClass) { // turn authorClass into authorID then authorname..
   // get the authorID from the class..
-  var authorId = exports.className2Author(authorClass);
+  let authorId = exports.className2Author(authorClass);
 
   // It could always be me..
-  var myAuthorId = pad.myUserInfo.userId;
-  if(myAuthorId == authorId){
-    return "#fff";
+  let myAuthorId = pad.myUserInfo.userId;
+  if (myAuthorId == authorId) {
+    return '#fff';
   }
 
   // Not me, let's look up in the DOM
-  var color = null;
-  $('#otheruserstable > tbody > tr').each(function(){
-    if (authorId == $(this).data("authorid")){
-      $(this).find('.usertdswatch > div').each( function() {
-        color = $(this).css("background-color");
+  let color = null;
+  $('#otheruserstable > tbody > tr').each(function () {
+    if (authorId == $(this).data('authorid')) {
+      $(this).find('.usertdswatch > div').each(function () {
+        color = $(this).css('background-color');
       });
     }
   });
-  if (color)
-    return color;
+  if (color) return color;
 
   // Else go historical
-  var historical = clientVars.collab_client_vars.historicalAuthorData[authorId];
-  return (historical && historical.color) || "#fff";
+  let historical = clientVars.collab_client_vars.historicalAuthorData[authorId];
+  return (historical && historical.color) || '#fff';
 }
 
 
 function arrayDelete(array, deleteValue) {
-  for (var i = 0; i < this.length; i++) {
+  for (let i = 0; i < this.length; i++) {
     if (this[i] == deleteValue) {
       this.splice(i, 1);
       i--;
