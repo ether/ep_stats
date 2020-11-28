@@ -204,8 +204,7 @@ exports.aceEditEvent = function (hook_name, event, cb) {
 };
 
 exports.className2Author = function (className) {
-  return className.substring(7).replace(/[a-y0-9]+|-|z.+?z/g, (cc)
-  => {
+  return className.substring(7).replace(/[a-y0-9]+|-|z.+?z/g, (cc) => {
     if (cc == '-') {return '.';}
     else if (cc.charAt(0) == 'z') {
       return String.fromCharCode(Number(cc.slice(1, -1)));
@@ -216,8 +215,7 @@ exports.className2Author = function (className) {
 };
 
 exports.getAuthorClassName = function (author) {
-  return 'ep_cursortrace-' + author.replace(/[^a-y0-9]/g, (c)
-  => {
+  return 'ep_cursortrace-' + author.replace(/[^a-y0-9]/g, (c) => {
     if (c == '.') return '-';
     return `z${  c.charCodeAt(0)  }z`;
   });
