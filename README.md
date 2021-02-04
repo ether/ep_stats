@@ -1,14 +1,16 @@
 Pad Stats in Etherpad
 =====================
 
-To enable Stats view click Settings -> Show Pad and Author Stats
+![Screenshot](https://user-images.githubusercontent.com/220864/106881734-cf7bdb00-66d5-11eb-9c54-6bf04fa45ad6.png)
+
+To disable Stats by default view click Settings -> Show Pad and Author Stats
 
 Setting as default
 ==================
 Paste the below into your settings.
-
-ep_stats_default: "true",
-
+```
+ep_stats_default: "false",
+```
 todo
 ====
 * All the things
