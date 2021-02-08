@@ -1,3 +1,5 @@
+![Publish Status](https://github.com/ether/ep_stats/workflows/Node.js%20Package/badge.svg) ![Backend Tests Status](https://github.com/ether/ep_stats/workflows/Backend%20tests/badge.svg)
+
 Pad Stats in Etherpad
 =====================
 
