@@ -208,7 +208,7 @@ exports.postAceInit = (hook, context) => {
   });
 };
 
-exports.aceEditEvent = (hookName, event, cb) => {
+exports.aceEditEvent = (hookName, event) => {
   if ($('#options-stats').is(':checked')) { // if stats are enabled
     if (event.callstack.docTextChanged && event.callstack.domClean) {
       stats.update();
