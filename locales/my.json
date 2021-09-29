@@ -1,5 +1,5 @@
 {
-  "ep_stats.stats_entry.show_pad_and_author_stats" : "Show Pad and Author stats",
+  "ep_stats.stats_entry.show_pad_and_author_stats" : "Pad နှင့်စာရေးသူစာရင်းဇယားများကိုပြပါ",
   "ep_stats.stats_template.characters_no_whitespace" : "စာလုံးများ (နေရာလွတ်မရှိ):",
   "ep_stats.stats_template.characters_with_whitespace" : "အက္ခရာများ (နေရာလွတ်) နှင့်:",
   "ep_stats.stats_template.lines_as_only_contribution" : "တစ်ကိုယ်တော်ပံ့ပိုးကူညီသူများအဖြစ်လိုင်းမျာ",
