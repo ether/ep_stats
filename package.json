@@ -1,7 +1,7 @@
 {
   "name": "ep_stats",
   "description": "See pad Stats in Etherpad",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "author": {
     "name": "John McLear",
     "email": "john@mclear.co.uk",
@@ -17,7 +17,6 @@
   "bugs": {
     "url": "https://github.com/johnmclear/ep_stats/issues"
   },
-  "_id": "ep_stats@0.0.1",
   "dist": {
     "shasum": "b616d0a993bc2c13de78825cac31164d34f7e68a"
   },
