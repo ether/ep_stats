@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/johnmclear/ep_stats"
+    "url": "https://github.com/ether/ep_stats.git"
   },
   "contributors": [],
   "readme": "Pad Stats in Etherpad\n=====================\n\nTo enable Stats view click Settings -> Show Pad and Author Stats\n\nSetting as default\n==================\nPaste the below into your settings.\n\nep_stats_default: \"true\",\n\ntodo\n====\n* All the things\n\nContact me to sponsor dev.\n",
