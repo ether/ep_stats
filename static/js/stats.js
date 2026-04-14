@@ -164,6 +164,7 @@ stats.authors = {
             if (spanClass.indexOf('author') !== -1) { // if an author class exists on this span
               results[spanClass] = number;
             } else {
+              if (!results[spanClass]) results[spanClass] = 0;
               results[spanClass] += 1;
             }
           });
@@ -183,7 +184,7 @@ stats.authors = {
           classes = classes.split(' ');
           const number = $(this).text().replace(/\s/g, '').length; // get length without whitespace
           $.each(classes, (k, spanClass) => {
-            if (classes.indexOf('author') !== -1) { // if an author class exists on this span
+            if (spanClass.indexOf('author') !== -1) { // if an author class exists on this span
               results[spanClass] = number;
             } else {
               results[spanClass] += number;
