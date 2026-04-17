@@ -4,6 +4,11 @@
   bottom:0;
   right:20px;
   width:300px;
+  /* Etherpad's toolbar dropdowns and popups use z-index values of 150–500
+     (see core pad/toolbar.css and pad/icons.css). Stay below that range so
+     menu dropdowns rendered on top of the pad aren't hidden behind the
+     stats overlay (#10). */
+  z-index: 10;
   background-color: var(--bg-color);
   color:#000;
   padding:20px;
