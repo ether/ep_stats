@@ -1,9 +1,36 @@
 'use strict';
 
 const {template} = require('ep_plugin_helpers');
+const {padToggle} = require('ep_plugin_helpers/pad-toggle-server');
 
-const eejs = require('ep_etherpad-lite/node/eejs');
-const settings = require('ep_etherpad-lite/node/utils/Settings');
+// Parallel User Settings + Pad Wide Settings checkboxes for "Show Pad and
+// Author stats". Helper owns markup, storage, broadcast, enforce, and i18n.
+const statsToggle = padToggle({
+  pluginName: 'ep_stats',
+  settingId: 'stats',
+  l10nId: 'ep_stats.stats_entry.show_pad_and_author_stats',
+  defaultLabel: 'Show Pad and Author stats',
+  defaultEnabled: true,
+});
+
+// Older settings.json used a top-level `ep_stats_default` key. Translate it
+// to the helper's nested `ep_stats.defaultEnabled` so an admin who set it
+// to `false` keeps a default-off pad.
+exports.loadSettings = async (hookName, args) => {
+  const root = args && args.settings;
+  if (root) {
+    const ps = (root.ep_stats = root.ep_stats || {});
+    if (typeof ps.defaultEnabled !== 'boolean' &&
+        typeof root.ep_stats_default === 'boolean') {
+      ps.defaultEnabled = root.ep_stats_default;
+    }
+  }
+  return statsToggle.loadSettings(hookName, args);
+};
+
+exports.clientVars = statsToggle.clientVars;
+exports.eejsBlock_mySettings = statsToggle.eejsBlock_mySettings;
+exports.eejsBlock_padSettings = statsToggle.eejsBlock_padSettings;
 
 exports.eejsBlock_exportColumn =
     template('ep_stats/templates/exportcolumn.html');
@@ -18,21 +45,3 @@ exports.eejsBlock_styles = (hookName, args, cb) => {
 
 exports.eejsBlock_body =
     template('ep_stats/templates/stats.html');
-
-exports.eejsBlock_mySettings = (hookName, args, cb) => {
-  let checkedState;
-  if (!settings.ep_stats_default) {
-    checkedState = 'unchecked';
-  } else if (settings.ep_stats_default === true) {
-    checkedState = 'checked';
-  }
-  args.content += eejs.require('ep_stats/templates/stats_entry.ejs', {checked: checkedState});
-  return cb();
-};
-
-
-exports.eejsBlock_dd_view = (hookName, args, cb) => {
-  args.content +=
-      "<li><a href='#' onClick='$(\"#options-stats\").click();'>Pad Statistics</a></li>";
-  return cb();
-};
