@@ -1,27 +1,23 @@
 'use strict';
 
+const {template} = require('ep_plugin_helpers');
+
 const eejs = require('ep_etherpad-lite/node/eejs');
 const settings = require('ep_etherpad-lite/node/utils/Settings');
 
-exports.eejsBlock_exportColumn = (hookName, args, cb) => {
-  args.content += eejs.require('ep_stats/templates/exportcolumn.html', {}, module);
-  return cb();
-};
+exports.eejsBlock_exportColumn =
+    template('ep_stats/templates/exportcolumn.html');
 
-exports.eejsBlock_scripts = (hookName, args, cb) => {
-  args.content += eejs.require('ep_stats/templates/scripts.html', {}, module);
-  return cb();
-};
+exports.eejsBlock_scripts =
+    template('ep_stats/templates/scripts.html');
 
 exports.eejsBlock_styles = (hookName, args, cb) => {
   args.content += '<link href="../static/plugins/ep_stats/static/css/stats.css" rel="stylesheet">';
   return cb();
 };
 
-exports.eejsBlock_body = (hookName, args, cb) => {
-  args.content += eejs.require('ep_stats/templates/stats.html', {}, module);
-  return cb();
-};
+exports.eejsBlock_body =
+    template('ep_stats/templates/stats.html');
 
 exports.eejsBlock_mySettings = (hookName, args, cb) => {
   let checkedState;
