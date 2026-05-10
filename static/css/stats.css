@@ -31,3 +31,11 @@
 .statsAuthorColor{
   width:4px;
 }
+
+/* Hide the stats panel in core's in-pad history mode (Etherpad #7659).
+   Stats reflect the live pad; they have no meaning when the pad is showing
+   a historical revision, and the panel's bottom-right position overlaps
+   core's history banner (the "Return to live" button in particular). The
+   class is added to <body> by core when entering history and removed when
+   the user returns to live. */
+body.history-mode #stats { display: none !important; }

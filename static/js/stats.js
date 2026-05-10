@@ -1,5 +1,23 @@
 'use strict';
 
+// Sub-path import keeps the client bundle clean — the top-level
+// `ep_plugin_helpers` index pulls in server-only modules.
+const {padToggle} = require('ep_plugin_helpers/pad-toggle');
+
+// Same config as the server-side instance — must agree on pluginName,
+// settingId, l10nId, and defaultLabel so checkbox ids and clientVars line up.
+const statsToggle = padToggle({
+  pluginName: 'ep_stats',
+  settingId: 'stats',
+  l10nId: 'ep_stats.stats_entry.show_pad_and_author_stats',
+  defaultLabel: 'Show Pad and Author stats',
+  defaultEnabled: true,
+});
+
+// Re-export so the helper sees pad-wide broadcasts and refreshes our state
+// when another user toggles the pad-wide checkbox.
+exports.handleClientMessage_CLIENT_MESSAGE = statsToggle.handleClientMessage_CLIENT_MESSAGE;
+
 const stats = {
   init: () => {
     stats.update();
@@ -198,19 +216,18 @@ stats.authors = {
 };
 
 exports.postAceInit = (hook, context) => {
-  stats.show();
-  /* on click */
-  $('#options-stats').on('click', () => {
-    if ($('#options-stats').is(':checked')) {
-      stats.show();
-    } else {
-      stats.hide();
-    }
+  statsToggle.init({
+    onChange: (enabled) => {
+      if (enabled) stats.show();
+      else stats.hide();
+    },
   });
 };
 
 exports.aceEditEvent = (hookName, event) => {
-  if ($('#options-stats').is(':checked')) { // if stats are enabled
+  // The helper keeps #options-stats in sync with the live toggle state,
+  // so a DOM check is still the simplest read path on the hot path.
+  if ($('#options-stats').is(':checked')) {
     if (event.callstack.docTextChanged && event.callstack.domClean) {
       stats.update();
     }
