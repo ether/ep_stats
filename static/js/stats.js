@@ -1,5 +1,16 @@
 'use strict';
 
+// Etherpad attributes inserts to this reserved id when no real author made
+// them: the default pad content written on pad creation, HTTP API
+// setText/appendText/setHTML calls without an authorId, server-side imports.
+// It is changeset bookkeeping rather than a contributor — core keeps it out
+// of historicalAuthorData and listAuthorsOfPad — so counting its spans put
+// the whole welcome text under an "Unknown Author" row on every fresh pad.
+// See ether/etherpad#8044.
+const SYSTEM_AUTHOR_ID = 'a.etherpad-system';
+const isSystemAuthorClass =
+    (spanClass) => exports.className2Author(spanClass) === SYSTEM_AUTHOR_ID;
+
 // Sub-path import keeps the client bundle clean — the top-level
 // `ep_plugin_helpers` index pulls in server-only modules.
 const {padToggle} = require('ep_plugin_helpers/pad-toggle');
@@ -90,6 +101,7 @@ stats.authors = {
           classes = classes.split(' ');
           $.each(classes, (k, spanClass) => {
             if (spanClass.indexOf('author') !== -1) { // if an author class exists on this span
+              if (isSystemAuthorClass(spanClass)) return; // nobody wrote it
               // how many words are in this string?
               const number = $(line).text().split(' ').length;
               if (!results[spanClass]) {
@@ -118,6 +130,7 @@ stats.authors = {
           $.each(classes, (k, spanClass) => {
             // if an author class exists on this span
             if (spanClass.indexOf('author') !== -1) {
+              if (isSystemAuthorClass(spanClass)) return; // nobody wrote it
               // how many words are in this string?
               // const number = $(line).text().split(' ').length;
               // TODO: Why was this not used?
@@ -146,6 +159,7 @@ stats.authors = {
           classes = classes.split(' ');
           $.each(classes, (k, spanClass) => {
             if (spanClass.indexOf('author') !== -1) { // if an author class exists on this span
+              if (isSystemAuthorClass(spanClass)) return; // nobody wrote it
               if (!line[lineCount]) {
                 line[lineCount] = {};
                 line[lineCount].author = spanClass; // first author!
@@ -179,12 +193,15 @@ stats.authors = {
           classes = classes.split(' ');
           const number = $(this).text().length;
           $.each(classes, (k, spanClass) => {
-            if (spanClass.indexOf('author') !== -1) { // if an author class exists on this span
-              results[spanClass] = number;
-            } else {
-              if (!results[spanClass]) results[spanClass] = 0;
-              results[spanClass] += 1;
-            }
+            // Author classes only. Spans routinely carry other classes too
+            // (`url`, plus whatever plugins add); the old else branch counted
+            // those as if they were authors, so a pad containing a link grew
+            // an "Unknown Author" row here.
+            if (spanClass.indexOf('author') === -1) return;
+            if (isSystemAuthorClass(spanClass)) return; // nobody wrote it
+            // Accumulate: an author usually holds several spans, and a plain
+            // assignment kept only the last one's length.
+            results[spanClass] = (results[spanClass] || 0) + number;
           });
         }
       });
@@ -202,11 +219,15 @@ stats.authors = {
           classes = classes.split(' ');
           const number = $(this).text().replace(/\s/g, '').length; // get length without whitespace
           $.each(classes, (k, spanClass) => {
-            if (spanClass.indexOf('author') !== -1) { // if an author class exists on this span
-              results[spanClass] = number;
-            } else {
-              results[spanClass] += number;
-            }
+            // Author classes only. Spans routinely carry other classes too
+            // (`url`, plus whatever plugins add); the old else branch counted
+            // those as if they were authors, so a pad containing a link grew
+            // an "Unknown Author" row here.
+            if (spanClass.indexOf('author') === -1) return;
+            if (isSystemAuthorClass(spanClass)) return; // nobody wrote it
+            // Accumulate: an author usually holds several spans, and a plain
+            // assignment kept only the last one's length.
+            results[spanClass] = (results[spanClass] || 0) + number;
           });
         }
       });
