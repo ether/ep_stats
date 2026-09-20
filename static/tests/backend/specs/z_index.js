@@ -8,7 +8,7 @@ const cssPath = path.resolve(
     __dirname, '..', '..', '..', '..', 'static', 'css', 'stats.css');
 
 describe(__filename, function () {
-  it('stats overlay uses a z-index below Etherpad toolbar popups (#10)', function () {
+  it('stats overlay uses a z-index below Etherpad toolbar popups (#10)', async function () {
     // Etherpad's toolbar dropdowns / popups use z-index values in the
     // 150–500 range (see core pad/toolbar.css and pad/icons.css). The
     // stats overlay is position:fixed, so without a lower explicit
